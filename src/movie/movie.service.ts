@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { Movie } from 'src/common';
+import { DatabaseTest } from 'src/shared';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class MovieService {
+  // constructor() {} // private readonly repo: Repository<Movie>, // @InjectRepository(Movie)
+
   create(createMovieDto: any) {
     console.log(createMovieDto);
 
@@ -9,7 +15,10 @@ export class MovieService {
   }
 
   findAll() {
-    return `This action returns all movie`;
+    console.log(process.env.TYPEORM_TYPE);
+    console.log(DatabaseTest);
+
+    return 'find all';
   }
 
   findOne(id: number) {

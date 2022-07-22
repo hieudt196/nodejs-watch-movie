@@ -7,6 +7,10 @@ export class AppController {
 
   @Get()
   getHello(@Res() res): any {
-    res.sendFile(__dirname, '/index.html');
+    res.sendFile(__dirname, '/');
+  }
+  @Get('/hello')
+  hello(): any {
+    return 'Hello World!';
   }
 }
