@@ -1,15 +1,22 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export class Base {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column()
+  @Column({ type: 'timestamp with time zone' })
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column()
+  @Column({ type: 'timestamp with time zone' })
+  @UpdateDateColumn()
   updated_at: Date;
 
-  @Column({ type: 'boolean', nullable: false, default: false })
-  is_delete: boolean;
+  @Column({ type: 'boolean', default: false })
+  is_deleted: boolean;
 }

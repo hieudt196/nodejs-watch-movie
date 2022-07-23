@@ -3,15 +3,15 @@ import { Column, Entity } from 'typeorm';
 
 @Entity()
 export class Movie extends Base {
-  @Column()
+  @Column({ type: 'text' })
   name: string;
 
-  @Column()
+  @Column({ type: 'text' })
   category: string;
 
-  @Column()
+  @Column({ type: 'text' })
   image: string;
 
-  @Column()
+  @Column({ type: 'text' })
   link: string;
 }

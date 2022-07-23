@@ -4,16 +4,16 @@ import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User extends Base {
-  @Column()
+  @Column({ type: 'text' })
   name: string;
 
-  @Column()
+  @Column({ type: 'text', unique: true })
   email: string;
 
-  @Column()
+  @Column({ type: 'text', nullable: true })
   phone: string;
 
-  @Column()
+  @Column({ type: 'text' })
   password: string;
 
   @Column({ type: 'text', nullable: true })
