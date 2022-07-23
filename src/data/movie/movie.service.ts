@@ -1,9 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { Movie } from 'src/common';
-import { databaseTest } from 'src/database';
-
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class MovieService {
@@ -16,8 +11,13 @@ export class MovieService {
   }
 
   findAll() {
-    console.log(process.env.TYPEORM_TYPE);
-    console.log(databaseTest);
+    // console.log(process.env.TYPEORM_TYPE);
+    // console.log(databaseTest);
+    // console.log(env);
+    console.log(process.env.TYPEORM_HOST);
+    console.log(process.env.TYPEORM_PORT);
+    console.log(process.env.TYPEORM_USERNAME);
+    console.log(process.env.TYPEORM_PASSWORD);
 
     return 'find all';
   }

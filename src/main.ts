@@ -1,16 +1,13 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-// import { AppDataSource } from './data-source';
+import { TransformInterceptor } from './shared';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // AppDataSource.initialize()
-  //   .then(() => {
-  //     // here you can start to work with your database
-  //     console.log('Start connect to database');
-  //   })
-  //   .catch((error) => console.log(error));
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   await app.listen(3000);
 }
