@@ -3,32 +3,44 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/common';
 import { Repository } from 'typeorm';
 import { LoginDto, RegisterDto } from './auth.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+
+    private jwtService: JwtService,
   ) {}
-  async findOne(condition: any): Promise<User> {
-    return this.userRepository.findOne({ where: condition });
+  async findOne(id: string): Promise<User> {
+    return this.userRepository.findOne({ where: { id, is_deleted: false } });
   }
 
-  async validate(input: LoginDto) {
-    const { email, phone, password } = input;
-    const filter = !!email ? { email } : { phone };
-    const user = await this.userRepository.findOne({
-      where: filter,
+  async login(input: LoginDto) {
+    let user = await this.userRepository.findOne({
+      where: { email: input.username, is_deleted: false },
       select: ['email', 'phone', 'password', 'role'],
     });
 
-    if (!user || user == null) {
-      throw new BadRequestException('Account not found');
-    }
+    if (!user)
+      user = await this.userRepository.findOne({
+        where: { phone: input.username, is_deleted: false },
+        select: ['email', 'phone', 'password', 'role'],
+      });
 
-    if (!!user && (await user.comparePassword(password))) {
-      const { password, ...result } = user;
-      return result;
+    if (!!user && (await user.comparePassword(input.password))) {
+      const payload = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+      };
+      return this.jwtService.sign(payload, {
+        secret: process.env.SESSION_KEY,
+        expiresIn: '1d',
+      });
     }
 
     throw new BadRequestException('Account not found');

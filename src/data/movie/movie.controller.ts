@@ -8,7 +8,9 @@ import {
   Delete,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
-
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+@ApiTags('Movie')
+@ApiBearerAuth('access-token')
 @Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}

@@ -2,9 +2,10 @@ import {
   CallHandler,
   ExecutionContext,
   Injectable,
+  Logger,
   NestInterceptor,
 } from '@nestjs/common';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 
 export interface Response<T> {
   data: T;
@@ -19,20 +20,20 @@ export class TransformInterceptor<T>
     next: CallHandler<T>,
   ): Observable<any> | Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
-
-    console.log('Body: ', request.body);
+    Logger.log(JSON.stringify(request.body));
 
     return next.handle().pipe(
-      // completed
+      // complete
       map((data) => {
+        Logger.log(JSON.stringify(data));
         return { data };
       }),
 
       //error
-      // catchError((err) => {
-      //   console.log(context.switchToHttp().getResponse());
-      //   return throwError(err);
-      // }),
+      catchError((err) => {
+        Logger.log(JSON.stringify(err));
+        return throwError(() => err);
+      }),
     );
   }
 }
