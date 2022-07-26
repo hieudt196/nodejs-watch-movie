@@ -1,6 +1,7 @@
-import { Base, URole } from 'src/shared';
+import { URole } from 'src/shared';
 import { Column, Entity } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Base } from '../../shared/base.entity';
 
 @Entity()
 export class User extends Base {

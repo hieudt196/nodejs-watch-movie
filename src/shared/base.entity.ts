@@ -6,7 +6,7 @@ import {
 } from 'typeorm';
 
 export class Base {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'timestamp with time zone' })

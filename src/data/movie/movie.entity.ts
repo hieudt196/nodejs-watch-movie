@@ -1,5 +1,5 @@
-import { Base } from 'src/shared';
 import { Column, Entity } from 'typeorm';
+import { Base } from '../../shared/base.entity';
 
 @Entity()
 export class Movie extends Base {
