@@ -26,7 +26,7 @@ export class TransformInterceptor<T>
       // complete
       map((data) => {
         Logger.log(JSON.stringify(data));
-        return { data };
+        return data;
       }),
 
       //error

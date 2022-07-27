@@ -22,6 +22,7 @@ export class UserService {
   update(id: number, updateUserDto: UserDto) {
     console.log(updateUserDto);
 
+    return this.repo.create();
     return `This action updates a #${id} user`;
   }
 

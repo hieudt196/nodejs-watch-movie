@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { MovieRepository } from './movie.repository';
 
 @Injectable()
 export class MovieService {
-  // constructor() {} // private readonly repo: Repository<Movie>, // @InjectRepository(Movie)
+  constructor(private readonly repo: MovieRepository) {}
 
   create(createMovieDto: any) {
     console.log(createMovieDto);
@@ -10,16 +11,8 @@ export class MovieService {
     return 'This action adds a new movie';
   }
 
-  findAll() {
-    // console.log(process.env.TYPEORM_TYPE);
-    // console.log(databaseTest);
-    // console.log(env);
-    console.log(process.env.TYPEORM_HOST);
-    console.log(process.env.TYPEORM_PORT);
-    console.log(process.env.TYPEORM_USERNAME);
-    console.log(process.env.TYPEORM_PASSWORD);
-
-    return 'find all';
+  async findAll() {
+    return this.repo.getAll();
   }
 
   findOne(id: number) {
