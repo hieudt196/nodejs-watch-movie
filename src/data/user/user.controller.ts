@@ -6,38 +6,45 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDto } from './user.dto';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { AddUserDto, UpdateUserDto } from './user.dto';
+import { ApiTags, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { ApiConsumesFromUrl, Roles, URole } from 'src/shared';
+import { User } from './user.entity';
 @ApiTags('User')
 @ApiBearerAuth('access-token')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: UserDto) {
-    return this.userService.create(createUserDto);
+  @Post('/add')
+  @ApiConsumes(ApiConsumesFromUrl)
+  @Roles(URole.SuperAdmin)
+  async addUser(@Body() createUserDto: AddUserDto): Promise<User> {
+    return this.userService.addUser(createUserDto);
   }
 
   @Get()
-  findAll() {
+  async findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
 
-  @Get(':id')
+  @Get('/find/:id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Patch('update')
+  @ApiConsumes(ApiConsumesFromUrl)
+  update(@Body() updateUserDto: UpdateUserDto, @Req() req) {
+    const id = req.user.id;
+    return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    return this.userService.remove(id);
   }
 }

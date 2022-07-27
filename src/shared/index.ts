@@ -4,3 +4,4 @@ export * from './transform.interceptor';
 export * from './role.decorator';
 export * from './auth.guard';
 export * from './shared.module';
+export * from './message-error';

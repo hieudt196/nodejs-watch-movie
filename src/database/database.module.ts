@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import 'dotenv/config';
 
-export const databaseOption = {
+const databaseOption = {
   host: process.env.TYPEORM_HOST,
   port: +process.env.TYPEORM_PORT,
   username: process.env.TYPEORM_USERNAME,
@@ -19,13 +19,6 @@ export const dataSource = new DataSource({
   ...databaseOption,
 });
 
-export const databaseProviders = [
-  {
-    provide: 'DATA_SOURCE',
-    useFactory: () => dataSource.initialize(),
-  },
-];
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -33,7 +26,5 @@ export const databaseProviders = [
       ...databaseOption,
     }),
   ],
-  providers: [...databaseProviders],
-  exports: [...databaseProviders],
 })
 export class DatabaseModule {}
